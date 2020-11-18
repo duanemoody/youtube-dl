@@ -135,7 +135,13 @@ class XHamsterIE(InfoExtractor):
         def get_height(s):
             return int_or_none(self._search_regex(
                 r'^(\d+)[pP]', s, 'height', default=None))
-
+        
+        # x=window.initials.favoritesVideoCollection; for (i in x) {console.log(x[i]['contentEntity']['pageURL']);}
+        # p=window.initials.favoritesVideoPaging.maxPages
+        # URL/p to collect all URLs on that page
+        # how you see it if it's yours: https://xhamster.com/my/favorites/videos/[guid]-[nick]
+        # how everyone else sees it:    https://xhamster.com/users/[username]/favorites/videos/[guid]-collection
+        # this global URL only works for anyone NOT logged in as you, it will redirect to your favorites page so don't --cookie
         initials = self._parse_json(
             self._search_regex(
                 (r'window\.initials\s*=\s*({.+?})\s*;\s*</script>',
